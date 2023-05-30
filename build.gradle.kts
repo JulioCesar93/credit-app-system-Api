@@ -11,7 +11,7 @@ plugins {
 
 group = "com.jcs"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
@@ -22,6 +22,7 @@ extra["snippetsDir"] = file("build/generated-snippets")
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springdoc.springdoc-openapi-webmvc-ui:2.0.2")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation ("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.flywaydb:flyway-core")
@@ -29,25 +30,15 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-	testImplementation 'io.mockk:mockk:1.13.4'
-}
+	}
 
-tasks.withType<KotlinCompile> {
+tasks.withType(KotlinCompile).configureEach {
 	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "17"
+		freeCompilerArgs = ['-Xjsr305=strict']
+		jvmTarget = '17'
 	}
 }
 
-tasks.withType<Test> {
+tasks.named('test') {
 	useJUnitPlatform()
-}
-
-tasks.test {
-	outputs.dir(snippetsDir)
-}
-
-tasks.asciidoctor {
-	inputs.dir(snippetsDir)
-	dependsOn(test)
 }
